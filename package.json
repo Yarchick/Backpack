@@ -1,0 +1,48 @@
+{
+  "name": "optimize-your-bag",
+  "version": "0.1.0",
+  "description": "optimize-your-bag",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack-dev-server --progress --config config/webpack.dev.js --host 0.0.0.0",
+    "build": "webpack --config config/webpack.prod.js"
+  },
+  "author": "yyarchick@gmail.com",
+  "private": true,
+  "dependencies": {
+    "device-detector-js": "^2.2.1",
+    "gsap": "^3.2.6",
+    "pixi.js": "5.2.4",
+    "webfontloader": "^1.6.28"
+  },
+  "devDependencies": {
+    "@types/gsap": "^1.20.2",
+    "@types/node": "14.0.1",
+    "@types/webfontloader": "^1.6.32",
+    "@types/webpack-env": "^1.15.3",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "6.0.1",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.5.3",
+    "eslint": "^7.18.0",
+    "file-loader": "6.0.0",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "prettier": "2.0.5",
+    "sass": "^1.32.4",
+    "sass-loader": "^10.1.1",
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^3.0.1",
+    "ts-loader": "^7.0.4",
+    "tsconfig-paths-webpack-plugin": "3.2.0",
+    "typescript": "^3.9.2",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.11",
+    "webpack-dev-server": "3.11.0",
+    "webpack-merge": "^4.2.2"
+  }
+}

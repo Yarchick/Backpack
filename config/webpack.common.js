@@ -1,16 +1,8 @@
 /* eslint-disable */
 const path = require("path");
-const webpack = require("webpack");
+const Webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-
-let htmlPath     = "../public/index.html";
-let htmlFilename = "index.html";
-
-if (process.env.NODE_ENV) {
-  htmlPath     = "../public/index.html";
-  htmlFilename = "index.html";
-}
 
 module.exports = {
   entry: {
@@ -54,13 +46,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, htmlPath),
-      filename: htmlFilename
+      template: path.resolve(__dirname, "../public/index.html"),
+      filename: "index.html"
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: "public/assets", to: "assets" }]
     }),
-    new webpack.ProvidePlugin({
+    new Webpack.ProvidePlugin({
       PIXI: "pixi.js"
     })
   ]

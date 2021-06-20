@@ -1,41 +1,36 @@
 import * as PIXI from "pixi.js";
-import { gsap, PixiPlugin, MotionPathPlugin } from "gsap/all";
-import DeviceDetector from "device-detector-js";
 
-// ===== Import JS =====
+// ===== JS =====
 import assetsConfig from "./assets/assetsConfig";
 import loadResources from "./loadResources";
-import config from "./config";
 
-// ===== Import CSS =====
-import "./assets/scss/common.scss";
+// ===== CSS =====
+import "./assets/scss/main.scss";
 
-PIXI.utils.skipHello();
-gsap.registerPlugin(PixiPlugin, MotionPathPlugin);
+// ===== Modules =====
+import { app, ticker } from "./modules/app";
+import Modules from "./modules";
 
-const app = new PIXI.Application({
-  view        : document.getElementById("mainCanvas") as HTMLCanvasElement,
-  width       : 500,
-  height      : 500,
-  antialias   : false,
-  transparent : false
-});
-
-const ticker  = PIXI.Ticker.shared;
-ticker.maxFPS = 60;
-
-const deviceDetector = new DeviceDetector();
-const device         = deviceDetector.parse(navigator.userAgent);
+window.PIXI = PIXI; // for development, pixi.js devtools need "window.PIXI"
 
 function loadApp() {
   // ===== Load resources =====
-  loadResources.load(PIXI.Loader.shared, assetsConfig(device.device.type), startApp);
+  !window.appIsLoaded ? loadResources.load(PIXI.Loader.shared, assetsConfig(), startApp) : startApp();
 
   // ===== Start app =====
-  function startApp(resources: PIXI.LoaderResource) {
-    console.log(resources);
-    ticker.add((delta: number) => {});
+  function startApp() {
+    new Modules({ app: app(), ticker, resources: window.resources });
+
+    if (!window.appIsLoaded) {
+      ticker.add((delta: number) => {});
+    }
   }
 }
 
-loadApp();
+if (!window.appIsLoaded) loadApp();
+
+if (module.hot) {
+  module.hot.accept();
+  if (window.appIsLoaded) loadApp();
+  window.appIsLoaded = true;
+}

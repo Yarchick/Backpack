@@ -1,12 +1,12 @@
 /* eslint-disable */
-const WebpackMerge = require("webpack-merge");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const webpackMerge = require("webpack-merge");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const common = require("./webpack.common");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-module.exports = WebpackMerge(common, {
+module.exports = webpackMerge(common, {
   mode: "production",
   optimization: {
     minimize: true,

@@ -1,16 +1,16 @@
 /* eslint-disable */
-const Webpack = require("webpack");
-const WebpackMerge = require("webpack-merge");
+const webpack = require("webpack");
+const webpackMerge = require("webpack-merge");
 const common = require("./webpack.common");
 
-module.exports = WebpackMerge(common, {
+module.exports = webpackMerge(common, {
   mode: "development",
   devtool: "inline-source-map",
   devServer: {
     https: false,
-    hot: false,
-    inline: false,
-    liveReload: false,
+    hot: true,
+    inline: true,
+    liveReload: true,
     host: "0.0.0.0",
     port: 3000,
     useLocalIp: true,
@@ -20,5 +20,5 @@ module.exports = WebpackMerge(common, {
     before(app) {},
     after(app) {}
   },
-  plugins: [new Webpack.HotModuleReplacementPlugin()]
+  plugins: [new webpack.HotModuleReplacementPlugin()]
 });

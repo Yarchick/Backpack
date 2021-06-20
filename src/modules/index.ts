@@ -10,12 +10,12 @@ class Modules {
   updatedMatrix = [];
   takenMatrixItems = [];
   thingsData = [
-    { rowCube: 0, columnCube: 0, cubeWidth: 13, cubeHeight: 13, imageName: "1" },
-    { rowCube: 1, columnCube: 5, cubeWidth: 13, cubeHeight: 15, imageName: "2" },
-    // { rowCube: 7, columnCube: 5, cubeWidth: 13, cubeHeight: 14, imageName: "3" },
-    // { rowCube: 4, columnCube: 0, cubeWidth: 13, cubeHeight: 13, imageName: "4" },
-    // { rowCube: 12, columnCube: 0, cubeWidth: 15, cubeHeight: 17, imageName: "5" },
-    // { rowCube: 14, columnCube: 5, cubeWidth: 17, cubeHeight: 14, imageName: "6" }
+    { rowCube: 0, columnCube: 0, cubeWidth: 3, cubeHeight: 3, imageName: "1" },
+    { rowCube: 1, columnCube: 5, cubeWidth: 3, cubeHeight: 5, imageName: "2" },
+    { rowCube: 7, columnCube: 5, cubeWidth: 3, cubeHeight: 4, imageName: "3" },
+    { rowCube: 4, columnCube: 0, cubeWidth: 3, cubeHeight: 3, imageName: "4" },
+    { rowCube: 12, columnCube: 0, cubeWidth: 5, cubeHeight: 7, imageName: "5" },
+    { rowCube: 14, columnCube: 5, cubeWidth: 7, cubeHeight: 4, imageName: "6" }
   ];
 
   cage: Cage;

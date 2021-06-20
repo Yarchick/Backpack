@@ -75,8 +75,9 @@ class Cube {
     return cubeGraphics;
   }
 
-  setThingCageData(thingData) {
-    this.thingData = thingData;
+  setThingCageData({ thingGraphics, originalX, originalY, x, y, width, height, thingData, index }) {
+    this.thingData = { thingGraphics, x: originalX, y: originalY, width, height, thingData, index };
+    this.moveThing({ x, y, width, height, thingData });
   }
 
   moveThing({ x, y, width, height, thingData }) {
@@ -140,7 +141,7 @@ class Cube {
       this.updateData(takesCages[0].rowCube, takesCages[0].columnCube, index);
     }
 
-    gsap.to(thingGraphics, { duration: 0.1, x: thingGraphicsCoords.x, y: thingGraphicsCoords.y });
+    gsap.to(thingGraphics, { duration: 0.05, x: thingGraphicsCoords.x, y: thingGraphicsCoords.y });
 
     this.matrix.forEach((cubeData) => {
       this.createGraphics(config.colors.yellow, cubeData.cubeGraphics);

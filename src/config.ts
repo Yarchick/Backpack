@@ -1,9 +1,9 @@
 const config = {
-  blockWidth: 20,
-  blockHeight: 20,
+  blockWidth: 40,
+  blockHeight: 40,
   cageGap: 0,
 
-  matrix: [60, 50],
+  matrix: [30, 20],
 
   colors: {
     yellow: 0xe67e22,

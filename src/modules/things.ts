@@ -45,14 +45,20 @@ class Things {
       thingGraphics.on("pointerdown", (event) => {
         this.setInteractive(thingGraphics);
 
-        // takeShiftX = event.data.global.x - thingGraphics.x;
-        // takeShiftY = event.data.global.y - thingGraphics.y;
-        takeShiftX = thingGraphics.width / 2;
-        takeShiftY = thingGraphics.height / 2;
         allowMove = true;
+        takeShiftX = event.data.global.x - thingGraphics.x - 1;
+        takeShiftY = event.data.global.y - thingGraphics.y - 1;
+        // takeShiftX = thingGraphics.width / 2;
+        // takeShiftY = thingGraphics.height / 2;
+
+        const originalX = thingGraphics.x;
+        const originalY = thingGraphics.y;
+        this.takeThingGraphics(thingGraphics, { x: event.data.global.x - takeShiftX, y: event.data.global.y - takeShiftY });
 
         setThingCageData({
           thingGraphics,
+          originalX,
+          originalY,
           x: thingGraphics.x,
           y: thingGraphics.y,
           width: thingData.cubeWidth * config.blockWidth,
@@ -101,6 +107,11 @@ class Things {
     });
 
     app.stage.addChild(thingsContainer);
+  }
+
+  takeThingGraphics(thingGraphics: PIXI.Graphics, { x, y }) {
+    thingGraphics.x = x;
+    thingGraphics.y = y;
   }
 
   setInteractive(thingGraphics?: PIXI.Graphics) {

@@ -1,39 +1,45 @@
 import { IApp } from "../interfaces/game";
 import config from "../config";
 
-import { IThingsData } from "../interfaces/game";
+import { IThingData } from "../interfaces/game";
 
 class Things {
   thingsGraphics: PIXI.Graphics[] = [];
 
   constructor(
     { app, ticker, resources }: IApp,
-    { matrix, thingsData }: { matrix: string[][]; thingsData: IThingsData[] },
+    { thingsData }: { thingsData: IThingData[] },
     { setThingCageData, moveThing, setOnPlace, getThingData }
   ) {
     const thingsContainer = new PIXI.Container();
     thingsContainer.name = "things";
 
-    thingsData.map((thingData, index) => {
+    thingsData.map((thingData: IThingData, index) => {
       const graphicsThingX = 0;
       const graphicsThingY = 0;
-      const graphicsThingWidth = config.blockWidth * thingData.cubeWidth + (thingData.cubeWidth - 1) * config.cageGap;
-      const graphicsThingHeight = config.blockHeight * thingData.cubeHeight + (thingData.cubeHeight - 1) * config.cageGap;
+      const graphicsThingWidth = config.blockWidth * thingData.width + thingData.width;
+      const graphicsThingHeight = config.blockHeight * thingData.height + thingData.height;
 
       const thingGraphics = new PIXI.Graphics();
-      thingGraphics.beginFill(0x0080ff, 1);
+      thingGraphics.beginFill(0x0080ff, 0);
       thingGraphics.drawRect(graphicsThingX, graphicsThingY, graphicsThingWidth, graphicsThingHeight);
       thingGraphics.endFill();
 
-      thingGraphics.x = thingData.columnCube * config.blockWidth + thingData.columnCube * config.cageGap;
-      thingGraphics.y = thingData.rowCube * config.blockHeight + thingData.rowCube * config.cageGap;
-      thingGraphics.alpha = 0.4;
+      const thingGraphicsBg = new PIXI.Graphics();
+      thingGraphicsBg.beginFill(0x0080ff, 0.4);
+      thingGraphicsBg.drawRect(graphicsThingX, graphicsThingY, graphicsThingWidth, graphicsThingHeight);
+      thingGraphicsBg.endFill();
+      thingGraphicsBg.alpha = 0;
+
+      thingGraphics.x = thingData.column * config.blockWidth;
+      thingGraphics.y = thingData.row * config.blockHeight;
       thingGraphics.interactive = true;
 
       const image = PIXI.Sprite.from(thingData.imageName);
       image.width = thingGraphics.width;
       image.height = thingGraphics.height;
 
+      thingGraphics.addChild(thingGraphicsBg);
       thingGraphics.addChild(image);
 
       let takeShiftX = 0;
@@ -48,59 +54,46 @@ class Things {
         allowMove = true;
         takeShiftX = event.data.global.x - thingGraphics.x - 1;
         takeShiftY = event.data.global.y - thingGraphics.y - 1;
-        // takeShiftX = thingGraphics.width / 2;
-        // takeShiftY = thingGraphics.height / 2;
 
         const originalX = thingGraphics.x;
         const originalY = thingGraphics.y;
         this.takeThingGraphics(thingGraphics, { x: event.data.global.x - takeShiftX, y: event.data.global.y - takeShiftY });
+        thingGraphicsBg.alpha = 1;
 
         setThingCageData({
-          thingGraphics,
           originalX,
           originalY,
           x: thingGraphics.x,
           y: thingGraphics.y,
-          width: thingData.cubeWidth * config.blockWidth,
-          height: thingData.cubeHeight * config.blockHeight,
+          width: thingData.width * config.blockWidth,
+          height: thingData.height * config.blockHeight,
           thingData: getThingData(index),
           index
         });
-      });
-
-      const mouseup = () => {
-        this.setInteractive();
-        allowMove = false;
-
-        setOnPlace({
-          thingGraphics,
-          x: thingGraphics.x,
-          y: thingGraphics.y,
-          width: thingData.cubeWidth * config.blockWidth,
-          height: thingData.cubeHeight * config.blockHeight,
-          thingData: getThingData(index),
-          index
-        });
-      };
-
-      thingGraphics.on("pointerup", () => {
-        mouseup();
       });
 
       thingGraphics.on("pointermove", (event) => {
         if (!allowMove) return;
 
-        thingGraphics.x = event.data.global.x - takeShiftX;
-        thingGraphics.y = event.data.global.y - takeShiftY;
+        this.takeThingGraphics(thingGraphics, { x: event.data.global.x - takeShiftX, y: event.data.global.y - takeShiftY });
 
         moveThing({
           x: thingGraphics.x,
           y: thingGraphics.y,
-          width: thingData.cubeWidth * config.blockWidth,
-          height: thingData.cubeHeight * config.blockHeight,
+          width: thingData.width * config.blockWidth,
+          height: thingData.height * config.blockHeight,
           thingData: getThingData(index),
           index
         });
+      });
+
+      thingGraphics.on("pointerup", () => {
+        this.setInteractive();
+        allowMove = false;
+
+        thingGraphicsBg.alpha = 0;
+
+        setOnPlace({ thingGraphics, index });
       });
 
       thingsContainer.addChild(thingGraphics);

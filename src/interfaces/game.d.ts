@@ -12,10 +12,16 @@ export interface IApp {
   resources: PIXI.LoaderResource;
 }
 
-export interface IThingsData {
-  columnCube: number;
-  rowCube: number;
-  cubeWidth: number;
-  cubeHeight: number;
+export interface IMatrix {
+  row: number;
+  column: number;
+  takenCube: boolean;
+}
+
+export interface IThingData {
+  row: number;
+  column: number;
+  width: number;
+  height: number;
   imageName: string;
 }

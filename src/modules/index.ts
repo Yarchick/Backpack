@@ -2,20 +2,22 @@ import Cage from "./cage";
 import Things from "./things";
 import { IApp } from "../interfaces/game";
 
-import { IThingsData } from "../interfaces/game";
+import { IMatrix, IThingData } from "../interfaces/game";
 import config from "../config";
 
 class Modules {
   matrix = [];
   updatedMatrix = [];
-  takenMatrixItems = [];
   thingsData = [
-    { rowCube: 0, columnCube: 0, cubeWidth: 3, cubeHeight: 3, imageName: "1" },
-    { rowCube: 1, columnCube: 5, cubeWidth: 3, cubeHeight: 5, imageName: "2" },
-    { rowCube: 7, columnCube: 5, cubeWidth: 3, cubeHeight: 4, imageName: "3" },
-    { rowCube: 4, columnCube: 0, cubeWidth: 3, cubeHeight: 3, imageName: "4" },
-    { rowCube: 12, columnCube: 0, cubeWidth: 5, cubeHeight: 7, imageName: "5" },
-    { rowCube: 14, columnCube: 5, cubeWidth: 7, cubeHeight: 4, imageName: "6" }
+    { row: 0, column: 0, width: 2, height: 3, imageName: "1" },
+    { row: 2, column: 10, width: 4, height: 2, imageName: "2" },
+    { row: 4, column: 5, width: 2, height: 3, imageName: "3" },
+    { row: 6, column: 0, width: 2, height: 3, imageName: "4" },
+    { row: 8, column: 5, width: 2, height: 3, imageName: "5" },
+    { row: 10, column: 0, width: 2, height: 3, imageName: "6" },
+    { row: 12, column: 5, width: 10, height: 3, imageName: "7" },
+    { row: 16, column: 0, width: 2, height: 3, imageName: "8" },
+    { row: 18, column: 5, width: 3, height: 3, imageName: "9" }
   ];
 
   cage: Cage;
@@ -23,12 +25,12 @@ class Modules {
 
   constructor({ app, ticker, resources }: IApp) {
     this.createMatrix();
-    this.setTakingMatrixItems(this.matrix, this.thingsData);
+    this.updateMatrix(this.matrix, this.thingsData);
 
     this.cage = new Cage({ app, ticker, resources }, { matrix: this.updatedMatrix }, { updateData: this.updateData.bind(this) });
     this.things = new Things(
       { app, ticker, resources },
-      { matrix: this.matrix, thingsData: this.thingsData },
+      { thingsData: this.thingsData },
       {
         setThingCageData: this.cage.setThingCageData.bind(this.cage),
         moveThing: this.cage.moveThing.bind(this.cage),
@@ -41,10 +43,10 @@ class Modules {
   createMatrix = () => {
     const matrix = [];
 
-    for (let row = 0; row <= config.matrix[0]; row++) {
+    for (let row = 1; row <= config.matrix[0]; row++) {
       const rowArray = [];
       for (let column = 0; column < config.matrix[1]; column++) {
-        rowArray.push(`${row}_${column}_0`);
+        rowArray.push({ row, column, takenCube: false });
       }
       matrix.push(rowArray);
     }
@@ -52,45 +54,40 @@ class Modules {
     this.matrix = matrix;
   };
 
-  setTakingMatrixItems = (matrix: string[][], thingsData: IThingsData[]) => {
-    const takenMatrixItems = [];
+  updateMatrix = (matrix: IMatrix[][], thingsData: IThingData[]) => {
+    const takenMatrixItems: { row: number; column: number }[] = [];
 
     thingsData.forEach((thingData) => {
-      for (let indexHeight = 0; indexHeight < thingData.cubeHeight; indexHeight++) {
-        for (let indexWidth = 0; indexWidth < thingData.cubeWidth; indexWidth++) {
-          takenMatrixItems.push(`${thingData.rowCube + indexHeight}_${thingData.columnCube + indexWidth}`);
+      for (let indexHeight = 0; indexHeight < thingData.height; indexHeight++) {
+        for (let indexWidth = 0; indexWidth < thingData.width; indexWidth++) {
+          takenMatrixItems.push({ row: thingData.row + indexHeight, column: thingData.column + indexWidth });
         }
       }
     });
 
-    const updatedMatrix = matrix.map((row) => {
-      return row.map((thingData) => {
-        const [rowItem, columnItem] = thingData.split("_");
-
-        takenMatrixItems.forEach((takenPosition: string) => {
-          const [rowTakenPosition, columnTakenPosition] = takenPosition.split("_");
-
-          if (rowItem === rowTakenPosition && columnItem === columnTakenPosition) {
-            thingData = `${rowItem}_${columnItem}_${1}`;
+    const updatedMatrix = matrix.map((row: IMatrix[]) => {
+      return row.map((matrixCube: IMatrix) => {
+        takenMatrixItems.forEach((takenCube: { row: number; column: number }) => {
+          if (matrixCube.row === takenCube.row && matrixCube.column === takenCube.column) {
+            matrixCube = { row: matrixCube.row, column: matrixCube.column, takenCube: true };
           }
         });
 
-        return thingData;
+        return matrixCube;
       });
     });
 
     this.updatedMatrix = updatedMatrix;
-    this.takenMatrixItems = takenMatrixItems;
   };
 
   getThingData(index: number) {
     return this.thingsData[index];
   }
 
-  updateData(rowCube: number, columnCube: number, index: number) {
-    this.thingsData[index] = { ...this.thingsData[index], rowCube, columnCube };
-    this.setTakingMatrixItems(this.matrix, this.thingsData);
-    this.cage.updateMatrix(this.updatedMatrix);
+  updateData(row: number, column: number, index: number) {
+    this.thingsData[index] = { ...this.thingsData[index], row, column };
+    this.updateMatrix(this.matrix, this.thingsData);
+    this.cage.setUpdatedMatrix(this.updatedMatrix);
   }
 }
 

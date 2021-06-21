@@ -9,8 +9,8 @@ function app() {
 
   return (window.app = new PIXI.Application({
     view: document.getElementById("mainCanvas") as HTMLCanvasElement,
-    width: config.matrix[1] * config.blockWidth+ config.matrix[1] * config.cageGap,
-    height: config.matrix[0] * config.blockHeight + config.matrix[0] * config.cageGap,
+    width: config.matrix[1] * config.blockHeight,
+    height: config.matrix[0] * config.blockHeight,
     antialias: false,
     transparent: false
   }));

@@ -1,7 +1,6 @@
 const config = {
-  blockWidth: 40,
-  blockHeight: 40,
-  cageGap: 0,
+  blockWidth: 30,
+  blockHeight: 30,
 
   matrix: [30, 20],
 

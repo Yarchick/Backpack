@@ -17,8 +17,8 @@ class Things {
     thingsData.map((thingData: IThingData, index) => {
       const graphicsThingX = 0;
       const graphicsThingY = 0;
-      const graphicsThingWidth = config.blockWidth * thingData.width + thingData.width;
-      const graphicsThingHeight = config.blockHeight * thingData.height + thingData.height;
+      const graphicsThingWidth = config.blockWidth * thingData.width;
+      const graphicsThingHeight = config.blockHeight * thingData.height;
 
       const thingGraphics = new PIXI.Graphics();
       thingGraphics.beginFill(0x0080ff, 0);
@@ -36,8 +36,8 @@ class Things {
       thingGraphics.interactive = true;
 
       const image = PIXI.Sprite.from(thingData.imageName);
-      image.width = thingGraphics.width;
-      image.height = thingGraphics.height;
+      image.width = graphicsThingWidth;
+      image.height = graphicsThingHeight;
 
       thingGraphics.addChild(thingGraphicsBg);
       thingGraphics.addChild(image);

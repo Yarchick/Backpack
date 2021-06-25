@@ -35,12 +35,12 @@ class Cube {
         cubeGraphics.y = indexX * config.blockHeight;
 
         const cubeBorderRight = new PIXI.Graphics();
-        cubeBorderRight.beginFill(0xaf601a, 1);
+        cubeBorderRight.beginFill(config.colors.border, 1);
         cubeBorderRight.drawRect(0, 0, 1, config.blockHeight);
         cubeBorderRight.endFill();
 
         const cubeBorderBottom = new PIXI.Graphics();
-        cubeBorderBottom.beginFill(0xaf601a, 1);
+        cubeBorderBottom.beginFill(config.colors.border, 1);
         cubeBorderBottom.drawRect(0, 0, config.blockWidth, 1);
         cubeBorderBottom.endFill();
 

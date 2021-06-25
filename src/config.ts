@@ -5,7 +5,8 @@ const config = {
   matrix: [30, 20],
 
   colors: {
-    yellow: 0xe67e22,
+    border: 0x333333,
+    yellow: 0x000000,
     green: 0x33a359,
     red: 0xf04f4f
   }

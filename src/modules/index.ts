@@ -43,7 +43,7 @@ class Modules {
   createMatrix = () => {
     const matrix = [];
 
-    for (let row = 1; row <= config.matrix[0]; row++) {
+    for (let row = 0; row <= config.matrix[0] - 1; row++) {
       const rowArray = [];
       for (let column = 0; column < config.matrix[1]; column++) {
         rowArray.push({ row, column, takenCube: false });

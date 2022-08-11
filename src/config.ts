@@ -6,7 +6,7 @@ const config = {
 
   colors: {
     border: 0x333333,
-    yellow: 0x000000,
+    black: 0x000000,
     green: 0x33a359,
     red: 0xf04f4f
   }

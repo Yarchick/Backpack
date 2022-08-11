@@ -29,7 +29,7 @@ class Cube {
 
     matrix.forEach((row: IMatrix[], indexX: number) => {
       row.forEach((cubeData: IMatrix, indexY: number) => {
-        const cubeGraphics = this.createGraphics(config.colors.yellow);
+        const cubeGraphics = this.createGraphics(config.colors.black);
 
         cubeGraphics.x = indexY * config.blockWidth;
         cubeGraphics.y = indexX * config.blockHeight;
@@ -119,7 +119,7 @@ class Cube {
         return;
       }
 
-      this.createGraphics(config.colors.yellow, cubeData.cubeGraphics);
+      this.createGraphics(config.colors.black, cubeData.cubeGraphics);
     });
 
     if (this.takenCubes.length < this.thingData.thingData.width * this.thingData.thingData.height) {
@@ -142,7 +142,7 @@ class Cube {
     gsap.to(thingGraphics, { duration: 0.05, x: thingGraphicsCoords.x, y: thingGraphicsCoords.y });
 
     this.cageMatrix.forEach((cubeData) => {
-      this.createGraphics(config.colors.yellow, cubeData.cubeGraphics);
+      this.createGraphics(config.colors.black, cubeData.cubeGraphics);
     });
   }
 }
